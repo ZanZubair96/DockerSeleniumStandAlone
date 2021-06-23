@@ -1,0 +1,37 @@
+Step-1: Download the framework and run the following command in the terminal
+
+Syntax: 
+docker build -t <IMAGE_NAME> .
+
+Example: 
+docker build -t myframework .
+
+The above command will produce the image of our selenium framework with the <IMAGE_NAME>
+
+Step-2: pull the selenium/standalone-chrome from the docker hub. (URL: https://hub.docker.com/r/selenium/standalone-chrome) 
+
+Example:
+docker pull selenium/standalone-chrome
+
+Step-3: Run the selenium/standalone-chrome image to create the docker container
+
+Example:
+docker run -d -p 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome:latest
+
+The above command will run the chrome standalone server container in the mentioned port.
+
+Step-4: Run the docker image framework by passing the following command.
+
+Syntax:
+docker run -d --network="host" <IMAGE_NAME> mvn -f /home/SeleniumTestFramework/pom.xml clean test <YOUR_MAVEN_GOALS>
+
+Example:
+docker run -d --network="host" myframeworkpoc mvn -f /home/SeleniumTestFramework/pom.xml clean test -Dapp=XXXXXX -Denv=LIVE -Drunner=XXXX -Dexecution_type=remote -Dbrowser_name=chrome -Dusername=XXXX -Dpassword=XXX -Dip=localhost -Dport=4444
+(please change the IP and PORT)
+
+The above command will execute container on the chrome standalone server.
+
+#NOTE:
+
+To view the console logs, you can use the following command
+docker logs -f <Container_ID>
